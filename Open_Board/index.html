@@ -11,12 +11,51 @@
   <body>
 
     <div class="navbar">
+       
         <div class="menu-button">
             <i class="fas fa-times"></i>
         </div>
+
+        <!-- -----------------------tool bar ---------------------- -->
         <div class="toolbar">
-            <div class="tool">
+
+            <!-- pencil -->
+            <div class="tool" id = "pencil">
                 <img src="icons/paintbrush.png" class="tool-icon" alt="">
+                <div class="pencil-tool">
+
+                    <!-- pencil size -->
+                   <div class="pencil-size wrapper">
+
+                        <!-- slider -->
+                            <custom-slider min="0" max="100" value="50"></custom-slider>
+                         
+                    </div>
+
+                    <!-- pencil color -->
+                    <div class="pencil-color">
+
+                        <div class="color-container">
+                            <div class="color pink"></div>
+                        </div>
+                        <div class="color-container">
+                            <div class="color blue"></div>
+                        </div>
+                        <div class="color-container">
+                            <div class="color green"></div>
+                        </div>
+                        <div class="color-container">
+                            <div class="color purple"></div>
+                        </div>
+                        <div class="color-container">
+                            <div class="color orange"></div>
+                        </div>
+                        <div class="color-container">
+                            <div class="color black"></div>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
             <div class="tool">
                 <img src="icons/eraser.png" class="tool-icon"alt="">
@@ -46,7 +85,8 @@
         </div>
     </div>
 
-    <canvas></canvas>
+    <!-- ---------------------------canvas --------------------- -->
+    <canvas id = "canvas"></canvas>
 
     <script src = "script.js"></script>
   </body>

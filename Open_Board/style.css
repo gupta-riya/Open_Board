@@ -1,3 +1,5 @@
+
+
 * {
   box-sizing: border-box;
 }
@@ -16,6 +18,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
 }
 
 .menu-button {
@@ -37,7 +40,7 @@ body {
 .toolbar {
   height: 4rem;
   width: 70vw;
-  background-color: lightyellow;
+  background-color: white;
   margin-left: 12rem;
   display: flex;
   justify-content: space-evenly;
@@ -48,6 +51,132 @@ body {
 {
     height:3rem;
     width: 3rem;
+   
+}
+
+/* pencil */
+
+/* #pencil{
+
+
+} */
+
+
+.pencil-tool{
+
+  width: 10rem;	
+	height: 7rem;
+  position: absolute;
+  top: 5.5rem;
+  left: 12rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  opacity:0;
+}
+
+.pencil-size{
+
+  width: 100%;
+  height: 35%;
+  
+}
+
+.wrapper {
+  position: absolute ;
+  width: 100%;
+  top : 0 ;
+  left: 0 ;
+  display: flex ;
+  align-items: center ;
+  justify-content: center ;
+  background-color: #043643 ;
+ 
+ 
+
+}
+
+custom-slider {
+  transform: scale(0.75);
+}
+
+
+/* pencil color */
+
+.pencil-color{
+
+ background-color: white;
+  width:100%;
+  height:65%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 1.1rem;
+  padding-right: 0.5rem;
+  
+
+}
+
+.color-container{
+
+  flex: 1 1 25%;
+  margin-left: 0.5rem;
+  margin-top: 0.1rem;
+  height:33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color{
+
+  background-color: blue;
+  height:1.2rem;
+  width:1.5rem;
+  border-radius: 40%;
+
+}
+
+.pink{
+  background-color: #ffaaa6 ;
+}
+
+.blue{
+  background-color: #00cec9 ;
+}
+
+.green{
+  background-color:#b8e994 ;
+}
+
+.purple{
+  background-color: #a58faa;
+}
+
+.orange{
+  background-color: #ffb037;
+}
+
+.black{
+  background-color: black;
+}
+
+
+
+
+
+
+
+
+/* --------------------------------- canvas------------------------------ */
+#canvas{
+
+  top: 6rem;
+  height: 1280px;
+  width: 1280px;
+  background-color: thistle;
+
 }
 
 @media only screen and (max-width: 688px) {
@@ -58,6 +187,7 @@ body {
     height: 100vh;
     width: 8rem;
     justify-content: space-between;
+    position: fixed;
     
     
   }
@@ -70,6 +200,7 @@ body {
     margin-top: 4rem;   
     z-index: 2; 
     flex-direction: column;   
+    
 
   } 
 
