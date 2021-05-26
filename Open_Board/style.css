@@ -2,10 +2,20 @@
 
 * {
   box-sizing: border-box;
+  text-decoration: none;
 }
 
 body {
   margin: 0;
+}
+
+.draw-board{
+
+  max-width:100vw;
+  max-height:100vh;
+  overflow: scroll;
+
+
 }
 
 /* -----------toolbar------------------------------ */
@@ -18,7 +28,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
+  
 }
 
 .menu-button {
@@ -45,6 +55,8 @@ body {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  opacity: 1;
+  position: absolute;
 }
 
 .tool-icon
@@ -172,10 +184,10 @@ custom-slider {
 /* --------------------------------- canvas------------------------------ */
 #canvas{
 
-  top: 6rem;
-  height: 1280px;
-  width: 1280px;
-  background-color: thistle;
+  /* top: 6rem; */
+  overflow: scroll;
+  /* background-color: thistle;
+   z-index: 100;   */
 
 }
 

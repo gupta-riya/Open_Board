@@ -1,31 +1,37 @@
 
+let navBar = document.querySelector(".navbar");
 let dispToolButton = document.querySelector(".menu-button");
 let toolBar = document.querySelector(".toolbar");
 let pencilTool = document.querySelector("#pencil");
+let canvas = document.getElementById("canvas");
+let tool = canvas.getContext('2d');
+let board = document.querySelector(".draw-board");
 
 
-
-
-
+// ------------- display toolbar-------------
 dispToolButton.addEventListener("click", function (e) {
-    if (dispToolButton.children[0].classList[1]=="fa-times") {
+    if (dispToolButton.children[0].classList[1] == "fa-times") {
         dispToolButton.children[0].classList.remove("fa-times");
         dispToolButton.children[0].classList.add("fa-bars");
-        toolBar.style.display = "none";
+        toolBar.style.opacity = 0;
     }
     else {
         dispToolButton.children[0].classList.remove("fa-bars");
         dispToolButton.children[0].classList.add("fa-times");
-        toolBar.style.display = "block";
+        toolBar.style.opacity = 1;
     }
 })
 
-pencilTool.addEventListener("dblclick",function(){
+
+// -------- on double click pencil icon show its font style -------------------
+pencilTool.addEventListener("dblclick", function () {
 
     let pencilFontOpt = pencilTool.querySelector(".pencil-tool");
     pencilFontOpt.style.opacity = 1;
 })
 
+
+// ---------- font size slide bar -------------------
 let stylesheetText = `
 #slider-container {
     --value : 0 ;
@@ -145,29 +151,29 @@ let stylesheetText = `
 ` ;
 
 class customSlider extends HTMLElement {
-    constructor(){
+    constructor() {
         super();
         this.value = parseFloat(this.getAttribute("value")) || 0;
-        this.min   = parseFloat(this.getAttribute("min"))   || 0;
-        this.max   = parseFloat(this.getAttribute("max"))   || 100;
-        this.step  = parseFloat(this.getAttribute("step"))  || 1;
+        this.min = parseFloat(this.getAttribute("min")) || 0;
+        this.max = parseFloat(this.getAttribute("max")) || 100;
+        this.step = parseFloat(this.getAttribute("step")) || 1;
 
-        this.style.minWidth = "12rem" ;
-        this.style.minHeight = "1rem" ;
-        this.style.position = "relative" ;
+        this.style.minWidth = "12rem";
+        this.style.minHeight = "1rem";
+        this.style.position = "relative";
 
         // Slider Element
-        this.root = this.attachShadow({mode:"open"}) ;
+        this.root = this.attachShadow({ mode: "open" });
 
         // Functionality
-        this.dragging = false ;
+        this.dragging = false;
 
         this.create();
         this.update();
     }
 
-    create(){
-        let slider   = document.createElement("input") ;
+    create() {
+        let slider = document.createElement("input");
         let sliderContainer = document.createElement("div");
         let sliderTrack = document.createElement("div");
         let value = document.createElement("div");
@@ -176,24 +182,24 @@ class customSlider extends HTMLElement {
         // style.rel = "stylesheet" ;
         // style.href = "/src/custom-slider-style.css" ;
 
-        let style = document.createElement("style") ;
-        style.innerHTML = stylesheetText ;
+        let style = document.createElement("style");
+        style.innerHTML = stylesheetText;
 
         // set properties
-        slider.type = "range" ;
-        slider.id = "slider" ;
-        slider.min = this.min ;
-        slider.max = this.max ;
-        slider.step = this.step ;
-        slider.value = this.value ;
+        slider.type = "range";
+        slider.id = "slider";
+        slider.min = this.min;
+        slider.max = this.max;
+        slider.step = this.step;
+        slider.value = this.value;
 
         // add ids
-        sliderContainer.id = "slider-container" ;
-        sliderTrack.id = "slider-track" ;
-        value.id = "value" ;
+        sliderContainer.id = "slider-container";
+        sliderTrack.id = "slider-track";
+        value.id = "value";
 
         // add event listeners
-        slider.addEventListener("input",this.update.bind(this));
+        slider.addEventListener("input", this.update.bind(this));
 
         // Appened Elements
         sliderContainer.appendChild(slider);
@@ -203,17 +209,92 @@ class customSlider extends HTMLElement {
         this.root.appendChild(sliderContainer);
     }
 
-    update(){
-        let track  = this.root.getElementById("slider-container");
+    update() {
+        let track = this.root.getElementById("slider-container");
         let slider = this.root.getElementById("slider");
         let value = this.root.getElementById("value");
-        let valuePercentage = slider.value / (this.max-this.min) ;
-        value.innerText = slider.value ;
-        track.style.setProperty("--value",valuePercentage);
+        let valuePercentage = slider.value / (this.max - this.min);
+        value.innerText = slider.value;
+        track.style.setProperty("--value", valuePercentage);
     }
 
 
 }
 
-customElements.define('custom-slider', customSlider );
+customElements.define('custom-slider', customSlider);
 
+// ------------- canvas ----------------------
+
+canvas.height = 1280;
+canvas.width = 1280;
+pencilTool.addEventListener("click", drawPencil);
+
+
+
+
+
+// ------------------- draw pencil -----------------
+function drawPencil() {
+    tool.lineWidth = 10;
+    tool.strokeStyle = "black";
+    tool.lineCap = "round";
+    let isMouseDown = false;
+    let maxScreen = false;
+
+
+    function checkScreenSize(screenRes) {
+        if (screenRes.matches) { // If media query matches
+          maxScreen = true;
+        } else {
+            maxScreen = false;
+        }
+      }
+    
+    document.body.addEventListener("mousedown", function (e) {
+        let screenRes = window.matchMedia("(max-width: 688px)");
+        checkScreenSize(screenRes);
+        let x = e.clientX;
+        let y = e.clientY;
+        x = getCoordinateX(x);
+        y = getCoordinateY(y);
+        tool.beginPath();
+        tool.moveTo(x, y);
+        isMouseDown = true;
+    })
+
+    document.body.addEventListener("mousemove", function (e) {
+        let x = e.clientX;
+        let y = e.clientY;
+        x = getCoordinateX(x);
+        y = getCoordinateY(y);
+        if (isMouseDown == true) {
+            tool.lineTo(x, y);
+            tool.stroke();
+        }
+    })
+
+
+    document.body.addEventListener("mouseup", function (e) {
+        isMouseDown = false;
+    })
+
+    // to adjust mouse pointer
+
+    function getCoordinateY(initialY) {
+
+        // maxscreen exceeds limit then dont subtract the height of navbar
+        if(!maxScreen)
+        return initialY + board.scrollTop - 96;
+        else
+        return initialY + board.scrollTop;
+    }
+
+    function getCoordinateX(initialX) {
+
+        // this keeps on adding left scroll in x coord 
+        return initialX + board.scrollLeft;
+    }
+
+    
+
+}
