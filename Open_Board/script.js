@@ -9,8 +9,10 @@ let pencilTool = document.querySelector("#pencil");
 let pencilFontOpt = pencilTool.querySelector(".pencil-tool");
 let colors = document.querySelectorAll(".color-container");
 let availableColors = {"pink":'pink',"green":"#b8e994" ,"blue":"#00cec9","purple":"#a58faa","orange":"#ffb037","black":"black"};
-
-
+let eraserTool = document.querySelector("#eraser");
+let eraserFontOpt = document.querySelector(".eraser-tool");
+let activeColor = "black";
+let activeDrawSize = 10;
 
 // ------------- display toolbar-------------
 dispToolButton.addEventListener("click", function (e) {
@@ -27,17 +29,16 @@ dispToolButton.addEventListener("click", function (e) {
 })
 
 
-// -------- on double click pencil icon show its font style -------------------
+// -------- on double click pencil and eraser icon show its font style -------------------
 pencilTool.addEventListener("dblclick", function () {
 
     pencilFontOpt.style.opacity = 1;
 
-    // // let sizeSlider = document.querySelector("#value");
-    // // sizeSlider.addEventListener("onchange", function () {
-    // //     console.log(sizeSlider.innerText);
-    // // })
-    // let sizeSlider = document.querySelector("custom-slider");
-    // console.log(sizeSlider.value);
+})
+
+eraserTool.addEventListener("dblclick", function () {
+
+    eraserFontOpt.style.opacity = 1;
 
 })
 
@@ -226,7 +227,8 @@ class customSlider extends HTMLElement {
         let value = this.root.getElementById("value");
         let valuePercentage = slider.value / (this.max - this.min);
         value.innerText = slider.value;
-        tool.lineWidth = value.innerText;
+        activeDrawSize = value.innerText;
+        tool.lineWidth = activeDrawSize;
         track.style.setProperty("--value", valuePercentage);
     }
 
@@ -242,24 +244,64 @@ canvas.width = 1280;
 
 canvas.addEventListener("click", function () {
     pencilFontOpt.style.opacity = 0;
+    eraserFontOpt.style.opacity = 0;
 })
-pencilTool.addEventListener("click", drawPencil);
-for (let i = 0; i < colors.length; i++) {
-    colors[i].addEventListener("click", function () {
 
-        tool.strokeStyle = availableColors[colors[i].children[0].classList[1]];
-      
-    })
+// ---------------  pencil and its color events-----------
+pencilTool.addEventListener("click", function(){
+    tool.lineWidth = activeDrawSize;
+    tool.strokeStyle = activeColor;
+    for (let i = 0; i < colors.length; i++) {
+        colors[i].addEventListener("click", function () {
+    
+            activeColor =  availableColors[colors[i].children[0].classList[1]]
+            tool.strokeStyle = activeColor;
+            
+        })
+    
+    }
+    drawAndErase();
+});
 
-}
+// ---------------- eraser and its size events-------------
+eraserTool.addEventListener("click",function(){
+    tool.strokeStyle = "white";
+    let eraserSize = document.querySelectorAll(".eraser-size");
+    for (let i = 0; i < eraserSize.length; i++) {
+        eraserSize[i].addEventListener("click", function () {
+    
+            if(i==0)
+            {
+                tool.lineWidth = 2;
+            }
+            else if(i==1)
+            {
+                tool.lineWidth = 10;
+            }
+            else if(i==2)
+            {
+                tool.lineWidth = 20;
+            }
+            else{
+                tool.lineWidth = 30;
+            }
+            
+            
+        })
+    
+    }
+
+    drawAndErase();
+})
 
 
 
 
 
 
-// ------------------- draw pencil -----------------
-function drawPencil() {
+
+// ------------------- draw pencil and eraser -----------------
+function drawAndErase() {
 
     tool.lineCap = "round";
     let isMouseDown = false;
