@@ -2,10 +2,14 @@
 let navBar = document.querySelector(".navbar");
 let dispToolButton = document.querySelector(".menu-button");
 let toolBar = document.querySelector(".toolbar");
-let pencilTool = document.querySelector("#pencil");
 let canvas = document.getElementById("canvas");
 let tool = canvas.getContext('2d');
 let board = document.querySelector(".draw-board");
+let pencilTool = document.querySelector("#pencil");
+let pencilFontOpt = pencilTool.querySelector(".pencil-tool");
+let colors = document.querySelectorAll(".color-container");
+let availableColors = {"pink":'pink',"green":"#b8e994" ,"blue":"#00cec9","purple":"#a58faa","orange":"#ffb037","black":"black"};
+
 
 
 // ------------- display toolbar-------------
@@ -26,8 +30,15 @@ dispToolButton.addEventListener("click", function (e) {
 // -------- on double click pencil icon show its font style -------------------
 pencilTool.addEventListener("dblclick", function () {
 
-    let pencilFontOpt = pencilTool.querySelector(".pencil-tool");
     pencilFontOpt.style.opacity = 1;
+
+    // // let sizeSlider = document.querySelector("#value");
+    // // sizeSlider.addEventListener("onchange", function () {
+    // //     console.log(sizeSlider.innerText);
+    // // })
+    // let sizeSlider = document.querySelector("custom-slider");
+    // console.log(sizeSlider.value);
+
 })
 
 
@@ -215,6 +226,7 @@ class customSlider extends HTMLElement {
         let value = this.root.getElementById("value");
         let valuePercentage = slider.value / (this.max - this.min);
         value.innerText = slider.value;
+        tool.lineWidth = value.innerText;
         track.style.setProperty("--value", valuePercentage);
     }
 
@@ -227,7 +239,20 @@ customElements.define('custom-slider', customSlider);
 
 canvas.height = 1280;
 canvas.width = 1280;
+
+canvas.addEventListener("click", function () {
+    pencilFontOpt.style.opacity = 0;
+})
 pencilTool.addEventListener("click", drawPencil);
+for (let i = 0; i < colors.length; i++) {
+    colors[i].addEventListener("click", function () {
+
+        tool.strokeStyle = availableColors[colors[i].children[0].classList[1]];
+      
+    })
+
+}
+
 
 
 
@@ -235,8 +260,7 @@ pencilTool.addEventListener("click", drawPencil);
 
 // ------------------- draw pencil -----------------
 function drawPencil() {
-    tool.lineWidth = 10;
-    tool.strokeStyle = "black";
+
     tool.lineCap = "round";
     let isMouseDown = false;
     let maxScreen = false;
@@ -244,32 +268,37 @@ function drawPencil() {
 
     function checkScreenSize(screenRes) {
         if (screenRes.matches) { // If media query matches
-          maxScreen = true;
+            maxScreen = true;
         } else {
             maxScreen = false;
         }
-      }
-    
+    }
+
     document.body.addEventListener("mousedown", function (e) {
-        let screenRes = window.matchMedia("(max-width: 688px)");
-        checkScreenSize(screenRes);
-        let x = e.clientX;
-        let y = e.clientY;
-        x = getCoordinateX(x);
-        y = getCoordinateY(y);
-        tool.beginPath();
-        tool.moveTo(x, y);
-        isMouseDown = true;
+        if (pencilFontOpt.style.opacity == 0) {
+            let screenRes = window.matchMedia("(max-width: 688px)");
+            checkScreenSize(screenRes);
+            let x = e.clientX;
+            let y = e.clientY;
+            x = getCoordinateX(x);
+            y = getCoordinateY(y);
+            tool.beginPath();
+            tool.moveTo(x, y);
+            isMouseDown = true;
+        }
     })
 
     document.body.addEventListener("mousemove", function (e) {
-        let x = e.clientX;
-        let y = e.clientY;
-        x = getCoordinateX(x);
-        y = getCoordinateY(y);
-        if (isMouseDown == true) {
-            tool.lineTo(x, y);
-            tool.stroke();
+
+        if (pencilFontOpt.style.opacity == 0) {
+            let x = e.clientX;
+            let y = e.clientY;
+            x = getCoordinateX(x);
+            y = getCoordinateY(y);
+            if (isMouseDown == true) {
+                tool.lineTo(x, y);
+                tool.stroke();
+            }
         }
     })
 
@@ -283,10 +312,10 @@ function drawPencil() {
     function getCoordinateY(initialY) {
 
         // maxscreen exceeds limit then dont subtract the height of navbar
-        if(!maxScreen)
-        return initialY + board.scrollTop - 96;
+        if (!maxScreen)
+            return initialY + board.scrollTop - 96;
         else
-        return initialY + board.scrollTop;
+            return initialY + board.scrollTop;
     }
 
     function getCoordinateX(initialX) {
@@ -295,6 +324,6 @@ function drawPencil() {
         return initialX + board.scrollLeft;
     }
 
-    
+
 
 }

@@ -68,25 +68,24 @@ body {
 
 /* pencil */
 
-/* #pencil{
 
 
-} */
-
-
+/* pencil font box */
 .pencil-tool{
 
   width: 10rem;	
 	height: 7rem;
   position: absolute;
-  top: 5.5rem;
-  left: 12rem;
+  top: 5rem;
+  left : -1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   opacity:0;
 }
+
+/* pencil size */
 
 .pencil-size{
 
@@ -219,5 +218,23 @@ custom-slider {
   .tool-icon{
       height: 2rem;
       width: 2rem;
+  }
+
+  .pencil-tool{
+
+    width: 8rem;	
+    height: 7rem;
+    position: absolute;
+    top: 0.5rem;
+    left : 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    opacity:0;
+  }
+
+  custom-slider {
+    transform: scale(0.6);
   }
 }
