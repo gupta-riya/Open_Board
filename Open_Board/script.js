@@ -14,6 +14,7 @@ let eraserFontOpt = document.querySelector(".eraser-tool");
 let activeColor = "black";
 let activeDrawSize = 10;
 
+
 // ------------- display toolbar-------------
 dispToolButton.addEventListener("click", function (e) {
     if (dispToolButton.children[0].classList[1] == "fa-times") {
@@ -297,9 +298,6 @@ eraserTool.addEventListener("click",function(){
 
 
 
-
-
-
 // ------------------- draw pencil and eraser -----------------
 function drawAndErase() {
 
@@ -369,3 +367,4 @@ function drawAndErase() {
 
 
 }
+
